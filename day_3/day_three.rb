@@ -4,7 +4,8 @@ SCORES = [*('a'..'z'), *('A'..'Z')].map.with_index(1) { |char, i| [char, i] }.to
 
 def part_one(rucksack_contents)
   rucksack_contents
-    .map { |line| line.chars.each_slice(line.size / 2).to_a }
+    .map(&:chars)
+    .map { |chars| chars.each_slice(chars.size / 2).to_a }
     .flat_map { |a, b| a.intersection(b) }
     .map { |c| SCORES[c] }
     .sum
@@ -14,8 +15,8 @@ def part_two(rucksack_contents)
   rucksack_contents
     .map(&:chars)
     .each_slice(3)
-    .flat_map { |chunk| chunk.inject(:&) }
-    .map { |char| SCORES[char] }
+    .flat_map { |chunk| chunk.reduce(:&) }
+    .map { |c| SCORES[c] }
     .sum
 end
 
